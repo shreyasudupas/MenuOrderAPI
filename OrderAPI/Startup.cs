@@ -3,6 +3,7 @@ using BuisnessLayer.AccessLayer;
 using BuisnessLayer.AccessLayer.IAccessLayer;
 using BuisnessLayer.DBModels;
 using BuisnessLayer.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,16 @@ namespace OrderAPI
                 );
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options=>
+            {
+                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+                options.Audience = Configuration["Auth0:Audience"];
+            }) ;
+
             services.AddControllers();
             services.AddDbContext<MenuOrderManagementContext>(options =>
                 options.UseSqlServer(
@@ -57,6 +69,26 @@ namespace OrderAPI
                         Name="Shreyas Udupa S",
                         Url = new Uri("https://MenuOrderManagement.com")
                     }
+                });
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.OAuth2
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
                 });
                 c.IncludeXmlComments(System.IO.Path.Combine(System.AppContext.BaseDirectory, "OrderAPI.xml"));
             });
@@ -87,6 +119,8 @@ namespace OrderAPI
             app.UseRouting();
 
             app.UseCors("AllowMyOrigin");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

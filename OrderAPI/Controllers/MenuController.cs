@@ -1,8 +1,10 @@
 ﻿using BuisnessLayer;
 using BuisnessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 
 namespace OrderAPI.Controllers
 {
@@ -23,8 +25,11 @@ namespace OrderAPI.Controllers
         /// <param name="VendorId"></param>
         /// <returns>Menu list</returns>
         [HttpGet]
+        [Authorize]
         public IActionResult GetMenuList(int VendorId)
         {
+            var headers = HttpContext.Request.Headers["UserInfo"];
+
             APIResponse response = new APIResponse();
             try
             {
