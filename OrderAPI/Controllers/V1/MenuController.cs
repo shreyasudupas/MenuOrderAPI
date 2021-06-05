@@ -1,14 +1,18 @@
 ﻿using BuisnessLayer;
 using BuisnessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace OrderAPI.Controllers
+namespace OrderAPI.Controllers.V1
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/v1/[controller]/[action]")]
     [EnableCors("AllowMyOrigin")]
+    [Authorize]
     public class MenuController : ControllerBase
     {
         private readonly IOrderBL _orderBL;
@@ -23,12 +27,14 @@ namespace OrderAPI.Controllers
         /// <param name="VendorId"></param>
         /// <returns>Menu list</returns>
         [HttpGet]
-        public IActionResult GetMenuList(int VendorId)
+        public async Task<IActionResult> GetMenuListAsync(int VendorId)
         {
+            var headers = HttpContext.Request.Headers["UserInfo"];
+
             APIResponse response = new APIResponse();
             try
             {
-                var result = _orderBL.GetMenuListForVednorId(VendorId);
+                var result = await _orderBL.GetMenuListForVednorIdAsync(VendorId);
                 if(result!=null)
                 {
                     response.Content = result;

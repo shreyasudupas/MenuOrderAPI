@@ -21,14 +21,18 @@ namespace BuisnessLayer.DBModels
         public virtual DbSet<TblMenuType> TblMenuTypes { get; set; }
         public virtual DbSet<TblVendorList> TblVendorLists { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=DESKTOP-MV64S7M\\SQLEXPRESS;Database=MenuOrderManagement;Trusted_Connection=True;");
-//            }
-//        }
+        public virtual DbSet<tblUser> tblUsers { get; set; }
+
+        public virtual DbSet<tblRole> tblRoles { get; set; }
+
+        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //        {
+        //            if (!optionsBuilder.IsConfigured)
+        //            {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        //                optionsBuilder.UseSqlServer("Server=DESKTOP-MV64S7M\\SQLEXPRESS;Database=MenuOrderManagement;Trusted_Connection=True;");
+        //            }
+        //        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -101,6 +105,24 @@ namespace BuisnessLayer.DBModels
                     .IsRequired()
                     .HasMaxLength(1000)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<tblUser>(entity =>
+            {
+                entity.HasKey(e => e.UserId);
+                entity.ToTable("tblUser");
+                entity.Property(e => e.UserName).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.Nickname).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.PictureLocation).HasMaxLength(2000);
+                entity.HasOne<tblRole>(e => e.tblRole).WithMany(d => d.tblUsers).HasForeignKey(e => e.RoleId);
+
+            });
+
+            modelBuilder.Entity<tblRole>(entity => 
+            {
+                entity.HasKey(e => e.RoleId);
+                entity.ToTable("tblRole");
+                entity.Property(e => e.Rolename).IsRequired().HasMaxLength(100);
             });
 
             OnModelCreatingPartial(modelBuilder);
