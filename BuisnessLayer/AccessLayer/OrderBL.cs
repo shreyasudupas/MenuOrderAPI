@@ -1,9 +1,11 @@
 ﻿using BuisnessLayer.DBModels;
 using BuisnessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using OrderAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BuisnessLayer
 {
@@ -38,12 +40,12 @@ namespace BuisnessLayer
             return orderList;
         }
 
-        public List<TblVendorList> GetVendorList()
+        public async Task<List<TblVendorList>> GetVendorListAsync()
         {
             List<TblVendorList> Vendorlist = new List<TblVendorList>();
             try
             {
-                 Vendorlist = dbContext.TblVendorLists.Where(x => x.VendorId > 0).ToList();
+                 Vendorlist = await dbContext.TblVendorLists.Where(x => x.VendorId > 0).ToListAsync();
                 
             }catch(Exception ex)
             {
@@ -52,13 +54,13 @@ namespace BuisnessLayer
             return Vendorlist;
         }
 
-        public MenuDisplayList GetMenuListForVednorId(int VendorId)
+        public async Task<MenuDisplayList> GetMenuListForVednorIdAsync(int VendorId)
         {
             MenuDisplayList ListMenu = new MenuDisplayList();
             try
             {
                 //ListMenu = dbContext.TblMenus.Where(x => x.VendorId == VendorId).OrderBy(x=>x.MenuTypeId).ToList();
-                var MenuList = (from Menu in dbContext.TblMenus
+                var MenuList = await (from Menu in dbContext.TblMenus
                         join MenuTypeName in dbContext.TblMenuTypes on Menu.MenuTypeId equals MenuTypeName.MenuTypeId
                         where (Menu.VendorId == VendorId)
                         orderby Menu.MenuTypeId
@@ -72,16 +74,16 @@ namespace BuisnessLayer
                             ImagePath = Menu.ImagePath,
                             OfferPrice = Menu.OfferPrice,
                             CreatedDate = Menu.CreatedDate
-                        }).ToList();
+                        }).ToListAsync();
 
-                var GetImageLinkOfMenuType = (from type in dbContext.TblMenuTypes
+                var GetImageLinkOfMenuType = await (from type in dbContext.TblMenuTypes
                                               where (type.MenuTypeId > 0)
                                               select new MenuItemDetail
                                               {
                                                   MenuTypeId = type.MenuTypeId,
                                                   MenuTypeName = type.MenuTypeName,
                                                   ImagePath = type.ImagePath
-                                              }).ToList();
+                                              }).ToListAsync();
 
                 ListMenu.MenuItemDetails = GetImageLinkOfMenuType;
                 ListMenu.MenuItemList = MenuList;

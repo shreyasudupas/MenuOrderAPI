@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OrderAPI.Controllers
+namespace OrderAPI.Controllers.V2
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/v2/[controller]/[action]")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderBL orderBL;

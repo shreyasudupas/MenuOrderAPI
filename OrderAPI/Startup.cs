@@ -2,22 +2,21 @@ using BuisnessLayer;
 using BuisnessLayer.AccessLayer;
 using BuisnessLayer.AccessLayer.IAccessLayer;
 using BuisnessLayer.DBModels;
-using BuisnessLayer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OrderAPI
 {
@@ -41,41 +40,49 @@ namespace OrderAPI
                 );
             });
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options=>
-            {
-                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
-                options.Audience = Configuration["Auth0:Audience"];
-            }) ;
-
-            services.AddControllers();
-            services.AddDbContext<MenuOrderManagementContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"))
-                );
-
+            //Adding Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo 
-                {   Title = "Order API", 
-                    Version = "1.0" ,
-                    Description = "This API shows customer ordering from UI",
-                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
-                    {
-                        Email="shreyasudupas@gmail.com",
-                        Name="Shreyas Udupa S",
-                        Url = new Uri("https://MenuOrderManagement.com")
-                    }
-                });
-                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                var titleBase = "MenuMangement API";
+                var description = "This is a Web API for Menu operations";
+                var License = new OpenApiLicense()
                 {
-                    In = ParameterLocation.Header,
-                    Description = "Please insert JWT with Bearer into field",
+                    Name = "MIT"
+                };
+                var contact = new OpenApiContact
+                {
+                    Email = "shreyasudupas@gmail.com",
+                    Name = "Shreyas Udupa S",
+                    Url = new Uri("https://MenuOrderManagement.com")
+                };
+
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = titleBase + " v1",
+                    Version = "v1",
+                    Description = description,
+                    Contact = contact,
+                    License = License
+                });
+
+                c.SwaggerDoc("v2", new OpenApiInfo
+                {
+                    Title = titleBase + " v2",
+                    Version = "v2",
+                    Description = description,
+                    Contact = contact,
+                    License = License
+                });
+                
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
                     Name = "Authorization",
-                    Type = SecuritySchemeType.OAuth2
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
@@ -92,6 +99,29 @@ namespace OrderAPI
                 });
                 c.IncludeXmlComments(System.IO.Path.Combine(System.AppContext.BaseDirectory, "OrderAPI.xml"));
             });
+
+            //Adding Authentication
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options=>
+            {
+                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+                options.Audience = Configuration["Auth0:Audience"];
+            }) ;
+
+            services.AddControllers(options=>
+            {
+                options.Conventions.Add(new GroupingByNamespaceConvention());
+            });
+
+            
+            services.AddDbContext<MenuOrderManagementContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")),ServiceLifetime.Transient
+            );
 
             services.AddScoped<IOrderBL, OrderBL>();
             services.AddSingleton<IProducer, Producer>();
@@ -113,7 +143,8 @@ namespace OrderAPI
             app.UseSwagger();
             app.UseSwaggerUI(c=>
             {
-                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Order API (V1.0)");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MenuOrder v1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "MenuOrder v2");
             });
 
             app.UseRouting();
@@ -128,6 +159,17 @@ namespace OrderAPI
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public class GroupingByNamespaceConvention : IControllerModelConvention
+        {
+            public void Apply(ControllerModel controller)
+            {
+                var controllerNamespace = controller.ControllerType.Namespace;
+                var apiVersion = controllerNamespace.Split(".").Last().ToLower();
+                if (!apiVersion.StartsWith("v")) { apiVersion = "v1"; }
+                controller.ApiExplorer.GroupName = apiVersion;
+            }
         }
     }
 }

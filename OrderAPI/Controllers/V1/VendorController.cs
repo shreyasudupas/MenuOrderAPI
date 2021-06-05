@@ -1,14 +1,17 @@
 ﻿using BuisnessLayer;
 using BuisnessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
-namespace OrderAPI.Controllers
+namespace OrderAPI.Controllers.V1
 {
-    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Route("api/v1/[controller]/[action]")]
     [EnableCors("AllowMyOrigin")]
+    [Authorize]
     public class VendorController : ControllerBase
     {
         private readonly IOrderBL _orderBL;
@@ -24,12 +27,12 @@ namespace OrderAPI.Controllers
         /// <response code="404">No Vendors</response>
         /// <response code="500">Exception in code</response>
         [HttpGet]
-        public IActionResult GetVendorList()
+        public async Task<IActionResult> GetVendorListAsync()
         {
             APIResponse aPIResponse = new APIResponse();
             try
             {
-                var getResult = _orderBL.GetVendorList();
+                var getResult = await _orderBL.GetVendorListAsync();
                 if (getResult.Count > 0)
                 {
                     aPIResponse.Content = getResult;

@@ -3,6 +3,7 @@ using BuisnessLayer.Models;
 using OrderAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BuisnessLayer
 {
@@ -10,7 +11,7 @@ namespace BuisnessLayer
     {
         List<Order> AddOrders(Order orderItems);
         List<Order> GetOrderListBasedOnCustomerId(Guid CustomerId, List<Order> orders);
-        List<TblVendorList> GetVendorList();
-        MenuDisplayList GetMenuListForVednorId(int VendorId);
+        Task<List<TblVendorList>> GetVendorListAsync();
+        Task<MenuDisplayList> GetMenuListForVednorIdAsync(int VendorId);
     }
 }
