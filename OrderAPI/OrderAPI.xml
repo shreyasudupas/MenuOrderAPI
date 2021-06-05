@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OrderAPI</name>
+    </assembly>
+    <members>
+        <member name="M:OrderAPI.Controllers.MenuController.GetMenuList(System.Int32)">
+            <summary>
+            Get the Menu List from the Vendor ID
+            </summary>
+            <param name="VendorId"></param>
+            <returns>Menu list</returns>
+        </member>
+        <member name="M:OrderAPI.Controllers.OrderController.AddOrderItem(OrderAPI.Models.Order)">
+            <summary>
+            This is adding a Order into the Database
+            </summary>
+            <param name="orderItems"></param>
+            <returns>true if successfull</returns>
+        </member>
+        <member name="M:OrderAPI.Controllers.OrderController.GetOrderItem(System.Guid)">
+            <summary>
+            Get individual Order details
+            </summary>
+            <param name="CustomerId"></param>
+            <returns>order detsils for the specific customer</returns>
+            <response code="401">Returns Order details not found</response>
+        </member>
+        <member name="M:OrderAPI.Controllers.VendorController.GetVendorList">
+            <summary>
+            This is to get the Vendor List
+            </summary>
+            <returns>List of string</returns>
+            <response code="404">No Vendors</response>
+            <response code="500">Exception in code</response>
+        </member>
+    </members>
+</doc>
