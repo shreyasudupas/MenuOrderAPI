@@ -25,6 +25,12 @@ namespace BuisnessLayer.DBModels
 
         public virtual DbSet<tblRole> tblRoles { get; set; }
 
+        public virtual DbSet<tblLog> tblLogs { get; set; }
+
+        public virtual DbSet<tblPaymentType> tblPaymentTypes { get; set; }
+        public virtual DbSet<tblUserOrder> tblUserOrders { get; set; }
+
+
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
         //            if (!optionsBuilder.IsConfigured)
@@ -115,7 +121,8 @@ namespace BuisnessLayer.DBModels
                 entity.Property(e => e.Nickname).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.PictureLocation).HasMaxLength(2000);
                 entity.HasOne<tblRole>(e => e.tblRole).WithMany(d => d.tblUsers).HasForeignKey(e => e.RoleId);
-
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<tblRole>(entity => 
@@ -123,6 +130,33 @@ namespace BuisnessLayer.DBModels
                 entity.HasKey(e => e.RoleId);
                 entity.ToTable("tblRole");
                 entity.Property(e => e.Rolename).IsRequired().HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<tblLog>(entity =>
+            {
+                entity.HasKey(e => e.LogId);
+                entity.ToTable("tblLog");
+                entity.Property(e => e.ControllerName).IsRequired();
+                entity.Property(e => e.ErrorMessage).IsRequired();
+            });
+
+            modelBuilder.Entity<tblPaymentType>(entity =>
+            {
+                entity.HasKey(e => e.PaymentTypeId);
+                entity.ToTable("tblPaymentType");
+                entity.Property(e => e.PaymentType).HasMaxLength(100);
+                entity.Property(e => e.PaymentDescription).HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<tblUserOrder>(entity =>
+            {
+                entity.HasKey(e => e.UserOrderId);
+                entity.ToTable("tblUserOrder");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.HasOne(e => e.User).WithMany(d => d.tblUserOrders).HasForeignKey(e=>e.UserId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne(e => e.VendorList).WithMany(d => d.UserOrders).HasForeignKey(e => e.VendorId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne(e => e.Menu).WithMany(d => d.UserOrders).HasForeignKey(e => e.MenuId).OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -4,14 +4,16 @@ using BuisnessLayer.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuisnessLayer.Migrations
 {
     [DbContext(typeof(MenuOrderManagementContext))]
-    partial class MenuOrderManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20210605135944_adding_logtable")]
+    partial class adding_logtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,26 +151,6 @@ namespace BuisnessLayer.Migrations
                     b.ToTable("tblLog");
                 });
 
-            modelBuilder.Entity("BuisnessLayer.DBModels.tblPaymentType", b =>
-                {
-                    b.Property<int>("PaymentTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("PaymentDescription")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("PaymentType")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("PaymentTypeId");
-
-                    b.ToTable("tblPaymentType");
-                });
-
             modelBuilder.Entity("BuisnessLayer.DBModels.tblRole", b =>
                 {
                     b.Property<int>("RoleId")
@@ -193,14 +175,6 @@ namespace BuisnessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("CartAmount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
                     b.Property<string>("Nickname")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -210,14 +184,8 @@ namespace BuisnessLayer.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<long>("Points")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -229,41 +197,6 @@ namespace BuisnessLayer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("tblUser");
-                });
-
-            modelBuilder.Entity("BuisnessLayer.DBModels.tblUserOrder", b =>
-                {
-                    b.Property<long>("UserOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<long>("MenuId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("VendorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserOrderId");
-
-                    b.HasIndex("MenuId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("tblUserOrder");
                 });
 
             modelBuilder.Entity("BuisnessLayer.DBModels.TblMenu", b =>
@@ -296,35 +229,6 @@ namespace BuisnessLayer.Migrations
                     b.Navigation("tblRole");
                 });
 
-            modelBuilder.Entity("BuisnessLayer.DBModels.tblUserOrder", b =>
-                {
-                    b.HasOne("BuisnessLayer.DBModels.TblMenu", "Menu")
-                        .WithMany("UserOrders")
-                        .HasForeignKey("MenuId")
-                        .IsRequired();
-
-                    b.HasOne("BuisnessLayer.DBModels.tblUser", "User")
-                        .WithMany("tblUserOrders")
-                        .HasForeignKey("UserId")
-                        .IsRequired();
-
-                    b.HasOne("BuisnessLayer.DBModels.TblVendorList", "VendorList")
-                        .WithMany("UserOrders")
-                        .HasForeignKey("VendorId")
-                        .IsRequired();
-
-                    b.Navigation("Menu");
-
-                    b.Navigation("User");
-
-                    b.Navigation("VendorList");
-                });
-
-            modelBuilder.Entity("BuisnessLayer.DBModels.TblMenu", b =>
-                {
-                    b.Navigation("UserOrders");
-                });
-
             modelBuilder.Entity("BuisnessLayer.DBModels.TblMenuType", b =>
                 {
                     b.Navigation("TblMenus");
@@ -333,18 +237,11 @@ namespace BuisnessLayer.Migrations
             modelBuilder.Entity("BuisnessLayer.DBModels.TblVendorList", b =>
                 {
                     b.Navigation("TblMenus");
-
-                    b.Navigation("UserOrders");
                 });
 
             modelBuilder.Entity("BuisnessLayer.DBModels.tblRole", b =>
                 {
                     b.Navigation("tblUsers");
-                });
-
-            modelBuilder.Entity("BuisnessLayer.DBModels.tblUser", b =>
-                {
-                    b.Navigation("tblUserOrders");
                 });
 #pragma warning restore 612, 618
         }

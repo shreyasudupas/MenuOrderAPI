@@ -19,5 +19,6 @@ namespace BuisnessLayer.DBModels
 
         public virtual TblMenuType MenuType { get; set; }
         public virtual TblVendorList Vendor { get; set; }
+        public ICollection<tblUserOrder> UserOrders { get; set; }
     }
 }

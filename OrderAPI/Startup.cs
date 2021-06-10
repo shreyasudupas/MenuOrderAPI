@@ -1,8 +1,11 @@
 using BuisnessLayer;
 using BuisnessLayer.AccessLayer;
 using BuisnessLayer.AccessLayer.IAccessLayer;
+using BuisnessLayer.AccessLayer.IModels;
 using BuisnessLayer.DBModels;
+using BuisnessLayer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using OrderAPI.Filters;
+using OrderAPI.Middleware;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Linq;
@@ -112,6 +117,11 @@ namespace OrderAPI
                 options.Audience = Configuration["Auth0:Audience"];
             }) ;
 
+            services.AddAuthorization(options=>
+            {
+                options.AddPolicy("AllowUserAccess", policy => policy.Requirements.Add(new UserRequirement("User")));
+            });
+
             services.AddControllers(options=>
             {
                 options.Conventions.Add(new GroupingByNamespaceConvention());
@@ -120,19 +130,28 @@ namespace OrderAPI
             
             services.AddDbContext<MenuOrderManagementContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")),ServiceLifetime.Transient
+                    Configuration.GetConnectionString("DefaultConnection"))
             );
 
+            //register for properties
+            services.AddScoped<IProfileUser, ProfileUser>();
+
+            //Register for classes
             services.AddScoped<IOrderBL, OrderBL>();
+            services.AddScoped<IUserBL, UserBL>();
             services.AddSingleton<IProducer, Producer>();
             services.AddSingleton<ISubsciber, SubsciberBreakfast>();
 
             services.AddHostedService<RabbitMQHosterService>();
+
+            //register all the Authorization Handlers here
+            services.AddScoped<IAuthorizationHandler, CheckIfUserHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -153,12 +172,15 @@ namespace OrderAPI
 
             app.UseAuthentication();
 
+            app.UseMiddleware<GetUserMiddleware>();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
 
         public class GroupingByNamespaceConvention : IControllerModelConvention

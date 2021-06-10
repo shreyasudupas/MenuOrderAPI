@@ -21,9 +21,5 @@
     <ProjectReference Include="..\BuisnessLayer\BuisnessLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SwaggerImplementation\" />
-  </ItemGroup>
-
 
 </Project>

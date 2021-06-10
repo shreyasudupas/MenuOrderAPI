@@ -19,5 +19,6 @@ namespace BuisnessLayer.DBModels
         public string VendorImgLink { get; set; }
 
         public virtual ICollection<TblMenu> TblMenus { get; set; }
+        public ICollection<tblUserOrder> UserOrders { get; set; }
     }
 }
