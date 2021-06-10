@@ -14,7 +14,7 @@ namespace BuisnessLayer.DBModels
         public long Points { get; set; }
         public double CartAmount { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         
 

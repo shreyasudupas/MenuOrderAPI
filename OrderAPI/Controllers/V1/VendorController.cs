@@ -11,7 +11,7 @@ namespace OrderAPI.Controllers.V1
     [ApiController]
     [Route("api/v1/[controller]/[action]")]
     [EnableCors("AllowMyOrigin")]
-    [Authorize]
+    [Authorize(Policy = "AllowUserAccess")]
     public class VendorController : ControllerBase
     {
         private readonly IOrderBL _orderBL;

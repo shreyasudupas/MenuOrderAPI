@@ -4,14 +4,16 @@ using BuisnessLayer.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuisnessLayer.Migrations
 {
     [DbContext(typeof(MenuOrderManagementContext))]
-    partial class MenuOrderManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20210610152943_update-tbluser")]
+    partial class updatetbluser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,9 +1,13 @@
 ﻿using BuisnessLayer.AccessLayer;
+using BuisnessLayer.AccessLayer.Enum;
+using BuisnessLayer.AccessLayer.IAccessLayer;
 using BuisnessLayer.AccessLayer.IModels;
+using BuisnessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,10 +19,12 @@ namespace OrderAPI.Filters
     public class CheckIfUserHandler : AuthorizationHandler<UserRequirement>
     {
         private readonly IProfileUser _profile;
+        private readonly IUserBL _userBL;
 
-        public CheckIfUserHandler(IProfileUser profile)
+        public CheckIfUserHandler(IProfileUser profile, IUserBL user)
         {
             _profile = profile;
+            _userBL = user;
         }
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserRequirement requirement)
         {
@@ -32,11 +38,22 @@ namespace OrderAPI.Filters
                     if (UserPermisson.ToLower() == requirement.User.ToLower())
                     {
                         //Userprofile value is got from Middleware where the header value is stored
-                        if(!string.IsNullOrEmpty(_profile.EmailId))
+                        if(!string.IsNullOrEmpty(_profile.GetUserDetails().Item1))
                         {
-                            var getEmailId = _profile.GetUserEmail();
+                            UserProfile user = new UserProfile();
+                            
+                            var Item = _profile.GetUserDetails();
+                            user.Username = Item.Item1;
+                            user.PictureLocation = Item.Item2;
+                            user.NickName = Item.Item3;
+                            user.RoleId =(int) Enum.Parse(typeof(ProfileEnum), UserPermisson.ToLower());
+
+                            var userPresent =_userBL.AddOrGetUserDetails(user);
+
+                            //Debug.WriteLine(getEmailId);
+                            if(userPresent != null)
                             //succeded the request
-                            context.Succeed(requirement);
+                                context.Succeed(requirement);
                         }
                     }
                     

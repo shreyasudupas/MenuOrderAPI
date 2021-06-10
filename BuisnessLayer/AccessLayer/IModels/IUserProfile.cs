@@ -4,8 +4,9 @@ namespace BuisnessLayer.AccessLayer.IModels
 {
     public interface IProfileUser
     {
-        public string EmailId { get; set; }
+        //public string EmailId { get; set; }
 
-        string GetUserEmail();
+        (string, string, string, int) GetUserDetails();
+        void SetUserDetails(string email, string PicLocation, string Nickname, int RoleId);
     }
 }

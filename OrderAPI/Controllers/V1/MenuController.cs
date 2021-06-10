@@ -12,7 +12,7 @@ namespace OrderAPI.Controllers.V1
     [ApiController]
     [Route("api/v1/[controller]/[action]")]
     [EnableCors("AllowMyOrigin")]
-    [Authorize]
+    [Authorize(Policy = "AllowUserAccess")]
     public class MenuController : ControllerBase
     {
         private readonly IOrderBL _orderBL;

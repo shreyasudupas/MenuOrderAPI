@@ -23,11 +23,13 @@ namespace BuisnessLayer.AccessLayer
                 var isUserPresent = dbContext.tblUsers.Where(x => x.UserName == userProfile.Username).FirstOrDefault();
                 if(isUserPresent==null)
                 {
+                    user.UserName = userProfile.Username;
                     user.Nickname = userProfile.NickName;
                     user.PictureLocation = userProfile.PictureLocation;
                     user.RoleId = userProfile.RoleId;
                     user.Points = 0;
                     user.CartAmount = 0;
+                    user.CreatedDate = DateTime.Now;
 
                     dbContext.tblUsers.Add(user);
                 }

@@ -11,11 +11,23 @@ namespace BuisnessLayer.AccessLayer
     /// <retruns>The EmailID</retruns>
     public class ProfileUser : IProfileUser
     {
-        public string EmailId { get; set; }
+        //public string EmailId { get; set; }
+        private string EmailId;
+        private string PictureLocation;
+        private string NickName;
+        private int RoleId;
 
-        public string GetUserEmail()
+        public (string,string,string,int) GetUserDetails()
         {
-            return EmailId; 
+            return (EmailId,PictureLocation,NickName,RoleId); 
+        }
+
+        public void SetUserDetails(string email,string PicLocation,string Nickname,int RoleId)
+        {
+            EmailId = email;
+            PictureLocation = PicLocation;
+            this.NickName = Nickname;
+            this.RoleId = RoleId;
         }
     }
 }

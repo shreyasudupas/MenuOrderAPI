@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using OrderAPI.Filters;
 using OrderAPI.Middleware;
+using OrderAPI.SwaggerOptionsFilters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Linq;
@@ -102,6 +103,10 @@ namespace OrderAPI
                     new string[] { }
                 }
                 });
+
+                //Adding Custom header Attribute
+                c.OperationFilter<CustomHeaderSwaggerAttribute>();
+
                 c.IncludeXmlComments(System.IO.Path.Combine(System.AppContext.BaseDirectory, "OrderAPI.xml"));
             });
 

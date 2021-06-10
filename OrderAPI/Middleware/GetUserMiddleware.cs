@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +27,9 @@ namespace OrderAPI.Middleware
                 var User = JsonConvert.DeserializeObject<UserProfile>(context.Request.Headers["UserInfo"]);
 
                 if(!string.IsNullOrEmpty(User.Username))
-                    profile.EmailId = User.Username;
+                    profile.SetUserDetails(User.Username,User.PictureLocation,User.NickName,User.RoleId);
+
+                Debug.WriteLine(profile.GetUserDetails());
             }
             catch (Exception)
             {
