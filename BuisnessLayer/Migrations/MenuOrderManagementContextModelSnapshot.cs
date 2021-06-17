@@ -193,15 +193,21 @@ namespace BuisnessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("CartAmount")
                         .HasColumnType("float");
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("Nickname")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -216,6 +222,9 @@ namespace BuisnessLayer.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StateId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime");
 
@@ -226,7 +235,11 @@ namespace BuisnessLayer.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("CityId");
+
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("StateId");
 
                     b.ToTable("tblUser");
                 });
@@ -266,6 +279,78 @@ namespace BuisnessLayer.Migrations
                     b.ToTable("tblUserOrder");
                 });
 
+            modelBuilder.Entity("OrderAPI.BuisnessLayer.DBModels.tblCity", b =>
+                {
+                    b.Property<int>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CityNames")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("CityId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("tblCity");
+                });
+
+            modelBuilder.Entity("OrderAPI.BuisnessLayer.DBModels.tblPaymentMode", b =>
+                {
+                    b.Property<int>("PaymentModeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PaymenentType")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("PaymentModeId");
+
+                    b.ToTable("tblPaymentMode");
+                });
+
+            modelBuilder.Entity("OrderAPI.BuisnessLayer.DBModels.tblState", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("StateNames")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("StateId");
+
+                    b.ToTable("tblState");
+                });
+
             modelBuilder.Entity("BuisnessLayer.DBModels.TblMenu", b =>
                 {
                     b.HasOne("BuisnessLayer.DBModels.TblMenuType", "MenuType")
@@ -287,11 +372,23 @@ namespace BuisnessLayer.Migrations
 
             modelBuilder.Entity("BuisnessLayer.DBModels.tblUser", b =>
                 {
+                    b.HasOne("OrderAPI.BuisnessLayer.DBModels.tblCity", "City")
+                        .WithMany("Users")
+                        .HasForeignKey("CityId");
+
                     b.HasOne("BuisnessLayer.DBModels.tblRole", "tblRole")
                         .WithMany("tblUsers")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("OrderAPI.BuisnessLayer.DBModels.tblState", "State")
+                        .WithMany("Users")
+                        .HasForeignKey("StateId");
+
+                    b.Navigation("City");
+
+                    b.Navigation("State");
 
                     b.Navigation("tblRole");
                 });
@@ -320,6 +417,16 @@ namespace BuisnessLayer.Migrations
                     b.Navigation("VendorList");
                 });
 
+            modelBuilder.Entity("OrderAPI.BuisnessLayer.DBModels.tblCity", b =>
+                {
+                    b.HasOne("OrderAPI.BuisnessLayer.DBModels.tblState", "State")
+                        .WithMany("Cities")
+                        .HasForeignKey("StateId")
+                        .IsRequired();
+
+                    b.Navigation("State");
+                });
+
             modelBuilder.Entity("BuisnessLayer.DBModels.TblMenu", b =>
                 {
                     b.Navigation("UserOrders");
@@ -345,6 +452,18 @@ namespace BuisnessLayer.Migrations
             modelBuilder.Entity("BuisnessLayer.DBModels.tblUser", b =>
                 {
                     b.Navigation("tblUserOrders");
+                });
+
+            modelBuilder.Entity("OrderAPI.BuisnessLayer.DBModels.tblCity", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("OrderAPI.BuisnessLayer.DBModels.tblState", b =>
+                {
+                    b.Navigation("Cities");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

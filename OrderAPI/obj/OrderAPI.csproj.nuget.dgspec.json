@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\OrderAPI\\OrderAPI.csproj": {}
+    "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\OrderAPI\\OrderAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj": {
+    "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\OrderAPI.BuisnessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj",
-        "projectName": "BuisnessLayer",
-        "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\OrderAPI.BuisnessLayer.csproj",
+        "projectName": "OrderAPI.BuisnessLayer",
+        "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\OrderAPI.BuisnessLayer.csproj",
         "packagesPath": "C:\\Users\\Shreyas Udupa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\obj\\",
+        "outputPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Shreyas Udupa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.6, )"
@@ -88,14 +92,14 @@
         }
       }
     },
-    "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\OrderAPI\\OrderAPI.csproj": {
+    "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\OrderAPI\\OrderAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\OrderAPI\\OrderAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\OrderAPI\\OrderAPI.csproj",
         "projectName": "OrderAPI",
-        "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\OrderAPI\\OrderAPI.csproj",
+        "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\OrderAPI\\OrderAPI.csproj",
         "packagesPath": "C:\\Users\\Shreyas Udupa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\OrderAPI\\obj\\",
+        "outputPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\OrderAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Shreyas Udupa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -112,8 +116,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj": {
-                "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj"
+              "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\OrderAPI.BuisnessLayer.csproj": {
+                "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\OrderAPI.BuisnessLayer.csproj"
               }
             }
           }
@@ -128,6 +132,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.15, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

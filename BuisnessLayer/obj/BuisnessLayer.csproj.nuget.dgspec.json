@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj": {}
+    "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\BuisnessLayer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj": {
+    "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\BuisnessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\BuisnessLayer.csproj",
         "projectName": "BuisnessLayer",
-        "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\BuisnessLayer.csproj",
+        "projectPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\BuisnessLayer.csproj",
         "packagesPath": "C:\\Users\\Shreyas Udupa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\OrderAPI\\BuisnessLayer\\obj\\",
+        "outputPath": "C:\\Users\\Shreyas Udupa\\source\\repos\\MenuOrderAPI_updated\\BuisnessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Shreyas Udupa\\AppData\\Roaming\\NuGet\\NuGet.Config",

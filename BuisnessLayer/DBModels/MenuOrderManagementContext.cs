@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using OrderAPI.BuisnessLayer.DBModels;
 
 #nullable disable
 
@@ -30,6 +31,9 @@ namespace BuisnessLayer.DBModels
         public virtual DbSet<tblPaymentType> tblPaymentTypes { get; set; }
         public virtual DbSet<tblUserOrder> tblUserOrders { get; set; }
 
+        public virtual DbSet<tblCity> tblCities { get; set; }
+        public virtual DbSet<tblState> tblStates { get; set; }
+        public virtual DbSet<tblPaymentMode> tblPaymentModes { get; set; }
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
@@ -118,9 +122,11 @@ namespace BuisnessLayer.DBModels
                 entity.HasKey(e => e.UserId);
                 entity.ToTable("tblUser");
                 entity.Property(e => e.UserName).IsRequired().HasMaxLength(500);
-                entity.Property(e => e.Nickname).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.FullName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.PictureLocation).HasMaxLength(2000);
                 entity.HasOne<tblRole>(e => e.tblRole).WithMany(d => d.tblUsers).HasForeignKey(e => e.RoleId);
+                entity.HasOne(e => e.City).WithMany(d => d.Users).HasForeignKey(e => e.CityId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne(e => e.State).WithMany(d => d.Users).HasForeignKey(e => e.StateId).OnDelete(DeleteBehavior.ClientSetNull);
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
@@ -157,6 +163,32 @@ namespace BuisnessLayer.DBModels
                 entity.HasOne(e => e.User).WithMany(d => d.tblUserOrders).HasForeignKey(e=>e.UserId).OnDelete(DeleteBehavior.ClientSetNull);
                 entity.HasOne(e => e.VendorList).WithMany(d => d.UserOrders).HasForeignKey(e => e.VendorId).OnDelete(DeleteBehavior.ClientSetNull);
                 entity.HasOne(e => e.Menu).WithMany(d => d.UserOrders).HasForeignKey(e => e.MenuId).OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<tblState>(entity =>
+            {
+                entity.HasKey(e => e.StateId);
+                entity.ToTable("tblState");
+                entity.Property(e => e.StateNames).HasMaxLength(200);
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<tblCity>(entity =>
+            {
+                entity.HasKey(e => e.CityId);
+                entity.ToTable("tblCity");
+                entity.Property(e => e.CityNames).HasMaxLength(200);
+                entity.HasOne(e => e.State).WithMany(d => d.Cities).HasForeignKey(e => e.StateId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<tblPaymentMode>(entity =>
+            {
+                entity.HasKey(e => e.PaymentModeId);
+                entity.ToTable("tblPaymentMode");
+                entity.Property(e=>e.PaymenentType).HasMaxLength(200);
             });
 
             OnModelCreatingPartial(modelBuilder);

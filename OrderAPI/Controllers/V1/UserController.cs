@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrderAPI.Controllers.V1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +32,14 @@ namespace OrderAPI.Controllers.V1
         /// <returns>User Profile Details</returns>
         /// <response code="200">success userDetails</response>
         [HttpPost]
-        public IActionResult GetOrUpdateUserDetails(BuisnessLayer.Models.UserProfile userProfile)
+        [AllowAnonymous]
+        public IActionResult GetOrUpdateUserDetails(UserProfile userProfile)
         {
             APIResponse response = new APIResponse();
             try
             {
-                //var res = _userBL.AddOrGetUserDetails(userProfile);
-                var res = _profile.GetUserDetails();
-                if(res.Item1 != null)
+                var res = _userBL.AddOrGetUserDetails(userProfile);
+                if(res != null)
                 {
                     response.Content = res;
                     response.Response = 200;

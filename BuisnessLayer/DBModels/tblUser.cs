@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrderAPI.BuisnessLayer.DBModels;
+using System;
 using System.Collections.Generic;
 
 namespace BuisnessLayer.DBModels
@@ -9,7 +10,11 @@ namespace BuisnessLayer.DBModels
         public string UserName { get; set; }
         //foriegn key
         public int RoleId { get; set; }
-        public string Nickname { get; set; }
+        public string FullName { get; set; }
+
+        public string? Address { get; set; }
+        public int? CityId { get; set; }
+        public int? StateId { get; set; }
         public string PictureLocation { get; set; }
         public long Points { get; set; }
         public double CartAmount { get; set; }
@@ -20,5 +25,7 @@ namespace BuisnessLayer.DBModels
 
         public tblRole tblRole { get; set; }
         public ICollection<tblUserOrder> tblUserOrders { get; set; }
+        public tblCity City { get; set; }
+        public tblState State { get; set; }
     }
 }

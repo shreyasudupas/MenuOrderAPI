@@ -1,0 +1,12 @@
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\bin\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.deps.json
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\bin\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.runtimeconfig.json
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\bin\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.runtimeconfig.dev.json
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\bin\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.dll
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\bin\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.pdb
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.AssemblyInfoInputs.cache
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.AssemblyInfo.cs
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.csproj.CoreCompileInputs.cache
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.dll
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.pdb
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.genruntimeconfig.cache
+C:\Users\Shreyas Udupa\source\repos\MenuOrderAPI_updated\BuisnessLayer\obj\Debug\netcoreapp3.1\OrderAPI.BuisnessLayer.csprojAssemblyReference.cache

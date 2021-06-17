@@ -23,6 +23,7 @@ using OrderAPI.SwaggerOptionsFilters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace OrderAPI
 {
@@ -107,7 +108,8 @@ namespace OrderAPI
                 //Adding Custom header Attribute
                 c.OperationFilter<CustomHeaderSwaggerAttribute>();
 
-                c.IncludeXmlComments(System.IO.Path.Combine(System.AppContext.BaseDirectory, "OrderAPI.xml"));
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile));
             });
 
             //Adding Authentication
@@ -132,7 +134,8 @@ namespace OrderAPI
                 options.Conventions.Add(new GroupingByNamespaceConvention());
             });
 
-            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddDbContext<MenuOrderManagementContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"))
